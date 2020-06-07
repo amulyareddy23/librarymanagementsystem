@@ -40,7 +40,7 @@ public class Validation {
 		return result;
 	}
 	public boolean validatedEmail(String email) throws LMSException {
-		String emailRegEx = "[\\\\\\\\w&&[^_]]{3,50}[@]{1}\\\\\\\\D{2,50}[.]{1}\\\\\\\\D{2,50}";
+		String emailRegEx = "^[a-z0-9._%+-]+@[a-z0-9.-]+.[a-z]{2,4}$";
 		boolean result = false;
 		Pattern pattern = Pattern.compile(emailRegEx);
 		Matcher matcher = pattern.matcher(email);

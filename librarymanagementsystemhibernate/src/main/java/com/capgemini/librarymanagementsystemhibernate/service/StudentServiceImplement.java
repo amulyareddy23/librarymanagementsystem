@@ -23,9 +23,9 @@ public class StudentServiceImplement implements StudentService{
 	}
 
 	@Override
-	public boolean returnBook(int bId, int uId, String status) {
+	public boolean returnBook(int bId, int uId,String status) {
 		// TODO Auto-generated method stub
-		return dao.returnBook(bId, uId, status);
+		return dao.returnBook(bId, uId,status);
 	}
 
 }

@@ -19,38 +19,35 @@ public class UsersDAOImplement implements UsersDAO{
 	EntityManager manager = null;
 	EntityTransaction transaction = null;
 
-
-
 	@Override
 	public boolean register(UsersBean user) {
-		try(FileInputStream info = new FileInputStream("db.properties");){
-			Properties pro = new Properties();
-			pro.load(info);
-			factory = Persistence.createEntityManagerFactory("TestPersistence");
+		try {
 			manager = factory.createEntityManager();
 			transaction = manager.getTransaction();
 			transaction.begin();
+			String jpql = "select u from UsersBean u";
+			TypedQuery<UsersBean> query = manager.createQuery(jpql,UsersBean.class);
+			List<UsersBean> list = query.getResultList();
+			for(UsersBean isExists : list) {
+				if(isExists.getEmail().equalsIgnoreCase(user.getEmail())) {
+					throw new LMSException("User already Exists");
+				}
+			}
 			manager.persist(user);
 			transaction.commit();
 			return true;
 		}catch (Exception e) {
 			System.err.println(e.getMessage());
-			transaction.rollback();
 			return false;
-		}finally {
-			manager.close();
-			factory.close();
 		}
 	}
 
 	@Override
 	public UsersBean login(String email, String password) {
-		try(FileInputStream info = new FileInputStream("db.properties");){
-			Properties pro = new Properties();
-			pro.load(info);
+		try {
 			factory = Persistence.createEntityManagerFactory("TestPersistence");
 			manager = factory.createEntityManager();
-			String jpql="select u from UsersBean u where u.email=:email and u.password=:password";
+			String jpql=QueryMapper.loginQuery;
 			TypedQuery<UsersBean> query = manager.createQuery(jpql,UsersBean.class);
 			query.setParameter("email", email);
 			query.setParameter("password", password);
@@ -65,17 +62,12 @@ public class UsersDAOImplement implements UsersDAO{
 		}
 	}
 
-
-
-
 	@Override
 	public List<BookBean> searchBookById(int bId) {
-		try(FileInputStream info = new FileInputStream("db.properties");) {
-			Properties pro = new Properties();
-			pro.load(info);
+		try {
 			factory = Persistence.createEntityManagerFactory("TestPersistence");
 			manager = factory.createEntityManager();
-			String jpql = "select b from BookBean b where b.bId=:bId";
+			String jpql = QueryMapper.searchBookById;
 			TypedQuery<BookBean> query = manager.createQuery(jpql,BookBean.class);
 			query.setParameter("bId", bId);
 			List<BookBean> recordList = query.getResultList();
@@ -91,12 +83,10 @@ public class UsersDAOImplement implements UsersDAO{
 
 	@Override
 	public List<BookBean> searchBookByTitle(String bookName) {
-		try(FileInputStream info = new FileInputStream("db.properties");) {
-			Properties pro = new Properties();
-			pro.load(info);
+		try{
 			factory = Persistence.createEntityManagerFactory("TestPersistence");
 			manager = factory.createEntityManager();
-			String jpql = "select b from BookBean b where b.bookName=:bookName";
+			String jpql = QueryMapper.searchBookByTitle;
 			TypedQuery<BookBean> query = manager.createQuery(jpql,BookBean.class);
 			query.setParameter("bookName", bookName);
 			List<BookBean> recordList = query.getResultList();
@@ -112,12 +102,10 @@ public class UsersDAOImplement implements UsersDAO{
 
 	@Override
 	public List<BookBean> searchBookByAuthor(String author) {
-		try(FileInputStream info = new FileInputStream("db.properties");) {
-			Properties pro = new Properties();
-			pro.load(info);
+		try{
 			factory = Persistence.createEntityManagerFactory("TestPersistence");
 			manager = factory.createEntityManager();
-			String jpql = "select b from BookBean b where b.author=:author";
+			String jpql = QueryMapper.searchBookByAuthor;
 			TypedQuery<BookBean> query = manager.createQuery(jpql,BookBean.class);
 			query.setParameter("author", author);
 			List<BookBean> recordList = query.getResultList();
@@ -135,7 +123,7 @@ public class UsersDAOImplement implements UsersDAO{
 	public List<BookBean> getBooksInfo() {
 		factory = Persistence.createEntityManagerFactory("TestPersistence");
 		manager = factory.createEntityManager();
-		String jpql = "select b from BookBean b";
+		String jpql = QueryMapper.getBooksInfo;
 		TypedQuery<BookBean> query = manager.createQuery(jpql,BookBean.class);
 		List<BookBean> recordList = query.getResultList();
 		manager.close();
@@ -143,19 +131,14 @@ public class UsersDAOImplement implements UsersDAO{
 		return recordList;
 	}
 
-
-
-
 	@Override
 	public boolean updatePassword(int id, String password, String newPassword, String role) {
-		try(FileInputStream info = new FileInputStream("db.properties");) {
-			Properties pro = new Properties();
-			pro.load(info);
+		try{
 			factory = Persistence.createEntityManagerFactory("TestPersistence");
 			manager = factory.createEntityManager();
 			transaction = manager.getTransaction();
 			transaction.begin();
-			String jpql = "select u from UsersBean u where u.uId=:uId and u.role=:role and u.password=:password";
+			String jpql = QueryMapper.updatePasswordQuery;
 			TypedQuery<UsersBean> query = manager.createQuery(jpql,UsersBean.class);
 			query.setParameter("uId", id);
 			query.setParameter("role", role);
@@ -179,6 +162,5 @@ public class UsersDAOImplement implements UsersDAO{
 			factory.close();
 		}
 	}
-
 
 }

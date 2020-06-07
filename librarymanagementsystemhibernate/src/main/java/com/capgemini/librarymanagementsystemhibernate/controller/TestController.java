@@ -38,6 +38,7 @@ public class TestController {
 		do {
 			try(Scanner scanner = new Scanner(System.in);){
 				System.out.println("**LIBRARY MANAGEMENT SYSTEM**");
+				System.out.println("---------------------------------");
 				System.out.println("Press 1 to Register");
 				System.out.println("Press 2 to Login");
 				System.out.println("Press 3 to EXIT");
@@ -59,6 +60,7 @@ public class TestController {
 								} catch (InputMismatchException e) {
 									flag = false;
 									System.err.println("Name should contains only Alphabates");
+									scanner.nextLine();
 								} catch (LMSException e) {
 									flag = false;
 									System.err.println(e.getMessage());
@@ -73,6 +75,7 @@ public class TestController {
 								} catch (InputMismatchException e) {
 									flag = false;
 									System.err.println("Name should contains only Alphabates");
+									scanner.nextLine();
 								} catch (LMSException e) {
 									flag = false;
 									System.err.println(e.getMessage());
@@ -88,6 +91,7 @@ public class TestController {
 								} catch (InputMismatchException e) {
 									flag = false;
 									System.err.println("Email should be proper ");
+									scanner.nextLine();
 								} catch (LMSException e) {
 									flag = false;
 									System.err.println(e.getMessage());
@@ -103,6 +107,7 @@ public class TestController {
 								} catch (InputMismatchException e) {
 									flag = false;
 									System.err.println("Enter correct Password ");
+									scanner.nextLine();
 								} catch (LMSException e) {
 									flag = false;
 									System.err.println(e.getMessage());
@@ -118,6 +123,7 @@ public class TestController {
 								} catch (InputMismatchException e) {
 									flag = false;
 									System.err.println("Mobile Number  should contains only numbers");
+									scanner.nextLine();
 								} catch (LMSException e) {
 									flag = false;
 									System.err.println(e.getMessage());
@@ -137,7 +143,7 @@ public class TestController {
 								if(check) {
 									System.out.println("Registered");
 								}else {
-									System.out.println("Already user is registered");
+									System.err.println("Already user is registered, press 2 to login");
 								}
 							}catch (LMSException e) {
 								System.err.println(e.getMessage());
@@ -186,6 +192,7 @@ public class TestController {
 													} catch (InputMismatchException e) {
 														flag = false;
 														System.err.println("Book-Name should contains only Alphabets");
+														scanner.nextLine();
 													} catch (LMSException e) {
 														flag = false;
 														System.err.println(e.getMessage());
@@ -202,6 +209,7 @@ public class TestController {
 													} catch (InputMismatchException e) {
 														flag = false;
 														System.err.println("Author Name should contains only Alphabates");
+														scanner.nextLine();
 													} catch (LMSException e) {
 														flag = false;
 														System.err.println(e.getMessage());
@@ -218,6 +226,7 @@ public class TestController {
 													} catch (InputMismatchException e) {
 														flag = false;
 														System.err.println("Book-Category should contains only Alphabates");
+														scanner.nextLine();
 													} catch (LMSException e) {
 														flag = false;
 														System.err.println(e.getMessage());
@@ -234,6 +243,7 @@ public class TestController {
 													} catch (InputMismatchException e) {
 														flag = false;
 														System.err.println("Book-PublisherName should contains only Alphabates");
+														scanner.nextLine();
 													} catch (LMSException e) {
 														flag = false;
 														System.err.println(e.getMessage());
@@ -300,13 +310,13 @@ public class TestController {
 												try {
 													List<BookBean> bookauthor = service1.searchBookByAuthor(author);
 													if(!bookauthor.isEmpty() && bookauthor != null) {
-														System.out.println(String.format("%-10s %-25s %-25s %-20s %s", "Book-Id",
+														System.out.println(String.format("%-15s %-25s %-25s %-20s %s", "Book-Id",
 																"Book-Name", "Author", "Category", "Publisher"));
 
 														for (BookBean bookBean : bookauthor) {
 
 															if (bookBean != null) {
-																System.out.println(String.format("%-10s %-25s %-25s %-20s %s",
+																System.out.println(String.format("%-15s %-25s %-25s %-20s %s",
 																		bookBean.getBId(), bookBean.getBookName(), bookBean.getAuthor(),
 																		bookBean.getCategory(), bookBean.getPublisher()));
 															}
@@ -325,11 +335,11 @@ public class TestController {
 												try {
 													List<BookBean> booktitle = service1.searchBookByTitle(btitle);
 													if(!booktitle.isEmpty() && booktitle != null) {
-														System.out.println(String.format("%-10s %-25s %-25s %-20s %s", "Book-Id",
+														System.out.println(String.format("%-15s %-25s %-25s %-25s %s", "Book-Id",
 																"Book-Name", "Author", "Category", "Publisher"));
 														for (BookBean bookBean : booktitle) {	
 															if (bookBean != null) {
-																System.out.println(String.format("%-10s %-25s %-25s %-20s %s",
+																System.out.println(String.format("%-15s %-25s %-25s %-25s %s",
 																		bookBean.getBId(), bookBean.getBookName(), bookBean.getAuthor(),
 																		bookBean.getCategory(), bookBean.getPublisher()));
 
@@ -348,12 +358,12 @@ public class TestController {
 												try {
 													List<BookBean> info = service1.getBooksInfo();
 													if(!info.isEmpty() && info != null) {
-														System.out.println(String.format("%-10s %-25s %-25s %-20s %s", "Book-Id",
+														System.out.println(String.format("%-15s %-25s %-25s %-20s %s", "Book-Id",
 																"Book-Name", "Author", "Category", "Publisher"));
 														for (BookBean bookBean : info) {
 
 															if (bookBean != null) {
-																System.out.println(String.format("%-10s %-25s %-25s %-20s %s",
+																System.out.println(String.format("%-15s %-25s %-25s %-20s %s",
 																		bookBean.getBId(), bookBean.getBookName(), bookBean.getAuthor(),
 																		bookBean.getCategory(), bookBean.getPublisher()));
 
@@ -373,11 +383,11 @@ public class TestController {
 												try {
 													List<BookBean> bId = service1.searchBookById(book_Id);
 													if(!bId.isEmpty() && bId != null) {
-														System.out.println(String.format("%-10s %-25s %-25s %-20s %s", "Book-Id",
+														System.out.println(String.format("%-15s %-25s %-25s %-20s %s", "Book-Id",
 																"Book-Name", "Author", "Category", "Publisher"));
 														for (BookBean bookBean : bId) {	
 															if (bookBean != null) {
-																System.out.println(String.format("%-10s %-25s %-25s %-20s %s",
+																System.out.println(String.format("%-15s %-25s %-25s %-20s %s",
 																		bookBean.getBId(), bookBean.getBookName(), bookBean.getAuthor(),
 																		bookBean.getCategory(), bookBean.getPublisher()));
 
@@ -435,10 +445,10 @@ public class TestController {
 												System.out.println(" Requests received are:");
 												try {
 													List<RequestDetailsBean> requests = service2.showRequests();
-													System.out.println(String.format("%10s %-10s %-10s %-25s %s","id","User_Id", "Book_Id","User_Email", "BookName"));
+													System.out.println(String.format("%20s %-15s %-15s %-25s %s","Request_id","User_Id", "Book_Id","User_Email", "BookName"));
 													for (RequestDetailsBean requestBean : requests) {	
 														if (requestBean != null) {
-															System.out.println(String.format("%-10s %-10s %-10s %-25s %s",requestBean.getId(),requestBean.getUId(), requestBean.getBId(),requestBean.getEmail(),requestBean.getBookName()));
+															System.out.println(String.format("%20s %-15s %-15s %-25s %s",requestBean.getId(),requestBean.getUId(), requestBean.getBId(),requestBean.getEmail(),requestBean.getBookName()));
 
 														} else {
 															System.out.println("-----------------------------------------------");
@@ -453,10 +463,10 @@ public class TestController {
 												System.out.println("Issued Books are:");
 												try {
 													List<BookIssueBean> issuedBooks = service2.showIssuedBooks();
-													System.out.println(String.format("%-10s %-10s %-10s %25s %s","Id","User_Id","Book_Id","Issue_Date","Return_Date"));
+													System.out.println(String.format("%-20s %-15s %-15s %25s %s","Issue_Id","User_Id","Book_Id","Issue_Date","Return_Date"));
 													for (BookIssueBean issueBean : issuedBooks) {	
 														if (issueBean != null) {
-															System.out.println(String.format("%-10s %-10s %-10s %25s %s",issueBean.getId(),issueBean.getUId(),issueBean.getBId(),issueBean.getIssueDate(),issueBean.getReturnDate()));
+															System.out.println(String.format("%-20s %-15s %-15s %25s %s",issueBean.getId(),issueBean.getUId(),issueBean.getBId(),issueBean.getIssueDate(),issueBean.getReturnDate()));
 
 														} else {
 															System.out.println("-----------------------------------------------");
@@ -574,12 +584,12 @@ public class TestController {
 												try {
 													if(loginInfo.getUId()==user_Id) {
 														List<BorrowedBooksBean> borrowedBookList = service3.borrowedBook(user_Id);
-														System.out.println(String.format("%-5s %-5s %-5s %s", "Id",
+														System.out.println(String.format("%-10s %-10s %-10s %s", "Id",
 																"User-Id", "Book-Id", "BookName"));
 														for (BorrowedBooksBean bookBean : borrowedBookList) {
 
 															if (bookBean != null) {
-																System.out.println(String.format("%-5s %-5s %-5s %s", bookBean.getId(),
+																System.out.println(String.format("%-10s %-10s %-10s %s", bookBean.getId(),
 																		bookBean.getUId(), bookBean.getBId(),bookBean.getBookName()));
 
 															} else {
@@ -601,13 +611,13 @@ public class TestController {
 												try {
 													List<BookBean> bookauthor = service1.searchBookByAuthor(author);
 													if(!bookauthor.isEmpty() && bookauthor != null) {
-														System.out.println(String.format("%-10s %-25s %-25s %-20s %s", "Book-Id",
+														System.out.println(String.format("%-15s %-25s %-25s %-20s %s", "Book-Id",
 																"Book-Name", "Author", "Category", "Publisher"));
 
 														for (BookBean bookBean : bookauthor) {
 
 															if (bookBean != null) {
-																System.out.println(String.format("%-10s %-25s %-25s %-20s %s",
+																System.out.println(String.format("%-15s %-25s %-25s %-20s %s",
 																		bookBean.getBId(), bookBean.getBookName(), bookBean.getAuthor(),
 																		bookBean.getCategory(), bookBean.getPublisher()));
 															}
@@ -626,11 +636,11 @@ public class TestController {
 												try {
 													List<BookBean> booktitle = service1.searchBookByTitle(btitle);
 													if(!booktitle.isEmpty() && booktitle != null) {
-														System.out.println(String.format("%-10s %-25s %-25s %-20s %s", "Book-Id",
+														System.out.println(String.format("%-15s %-25s %-25s %-20s %s", "Book-Id",
 																"Book-Name", "Author", "Category", "Publisher"));
 														for (BookBean bookBean : booktitle) {	
 															if (bookBean != null) {
-																System.out.println(String.format("%-10s %-25s %-25s %-20s %s",
+																System.out.println(String.format("%-15s %-25s %-25s %-20s %s",
 																		bookBean.getBId(), bookBean.getBookName(), bookBean.getAuthor(),
 																		bookBean.getCategory(), bookBean.getPublisher()));
 
@@ -645,16 +655,16 @@ public class TestController {
 												}
 												break;
 											case 5:
-												System.out.println("  Search the book by the Book_ID :");
+												System.out.println("Search the book by the Book_ID :");
 												int book_Id = scanner.nextInt();
 												try {
 													List<BookBean> bId = service1.searchBookById(book_Id);
 													if(!bId.isEmpty() && bId != null) {
-														System.out.println(String.format("%-10s %-25s %-25s %-20s %s", "Book-Id",
+														System.out.println(String.format("%-15s %-25s %-25s %-20s %s", "Book-Id",
 																"Book-Name", "Author", "Category", "Publisher"));
 														for (BookBean bookBean : bId) {	
 															if (bookBean != null) {
-																System.out.println(String.format("%-10s %-25s %-25s %-20s %s",
+																System.out.println(String.format("%-15s %-25s %-25s %-20s %s",
 																		bookBean.getBId(), bookBean.getBookName(), bookBean.getAuthor(),
 																		bookBean.getCategory(), bookBean.getPublisher()));
 
@@ -672,12 +682,12 @@ public class TestController {
 												try {
 													List<BookBean> info = service1.getBooksInfo();
 													if(!info.isEmpty() && info != null) {
-														System.out.println(String.format("%-10s %-25s %-25s %-20s %s", "Book-Id",
+														System.out.println(String.format("%-15s %-25s %-25s %-20s %s", "Book-Id",
 																"Book-Name", "Author", "Category", "Publisher"));
 														for (BookBean bookBean : info) {
 
 															if (bookBean != null) {
-																System.out.println(String.format("%-10s %-25s %-25s %-20s %s",
+																System.out.println(String.format("%-15s %-25s %-25s %-20s %s",
 																		bookBean.getBId(), bookBean.getBookName(), bookBean.getAuthor(),
 																		bookBean.getCategory(), bookBean.getPublisher()));
 

@@ -1,6 +1,6 @@
 package com.capgemini.librarymanagementsystem.service;
 
-import java.util.List;
+import java.util.ArrayList;
 
 import com.capgemini.librarymanagementsystem.dao.AdminDAO;
 import com.capgemini.librarymanagementsystem.dto.Admin;
@@ -33,32 +33,32 @@ public class AdminServiceImplement implements AdminService{
 	}
 	
 	@Override
-	public List<Book> searchBookByTitle(String bookName) {
+	public ArrayList<Book> searchBookByTitle(String bookName) {
 		return dao.searchBookByTitle(bookName);
 	}
 
 	@Override
-	public List<Book> searchBookByAuthor(String author) {
+	public ArrayList<Book> searchBookByAuthor(String author) {
 		return dao.searchBookByAuthor(author);
 	}
 
 	@Override
-	public List<Book> searchBookByCategory(String category) {
+	public ArrayList<Book> searchBookByCategory(String category) {
 		return dao.searchBookByCategory(category);
 	}
 
 	@Override
-	public List<Book> getBooksInfo() {
+	public ArrayList<Book> getBooksInfo() {
 		return dao.getBooksInfo();
 	}
 
 	@Override
-	public List<User> showUsers() {
+	public ArrayList<User> showUsers() {
 		return dao.showUsers();
 	}
 
 	@Override
-	public List<RequestBean> showRequests() {
+	public ArrayList<RequestBean> showRequests() {
 		return dao.showRequests();
 	}
 

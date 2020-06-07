@@ -1,7 +1,6 @@
 package com.capgemini.librarymanagementsystem.dao;
 
-import java.util.LinkedList;
-import java.util.List;
+import java.util.ArrayList;
 
 import com.capgemini.librarymanagementsystem.database.LibraryDB;
 import com.capgemini.librarymanagementsystem.dto.Book;
@@ -14,7 +13,7 @@ public class UserDAOImplement implements UserDAO{
 	@Override
 	public boolean registerUser(User user) {
 		for(User u : LibraryDB.USER) {
-			if(u.getEmail().equals(user.getEmail())) {
+			if(u.getEmail().equalsIgnoreCase(user.getEmail())) {
 				return false;
 			}
 		}
@@ -25,7 +24,7 @@ public class UserDAOImplement implements UserDAO{
 	@Override
 	public User loginUser(String email, String password){
 		for(User user : LibraryDB.USER) {
-			if(user.getEmail().equals(email) ) {
+			if(user.getEmail().equalsIgnoreCase(email) ) {
 				if(user.getPassword().equals(password)) {
 					return user;
 				}else {
@@ -41,13 +40,13 @@ public class UserDAOImplement implements UserDAO{
 
 
 	@Override
-	public List<Book> searchBookByTitle(String bookName) {
-		List<Book> searchList=new LinkedList<Book>();
+	public ArrayList<Book> searchBookByTitle(String bookName) {
+		ArrayList<Book> searchList=new ArrayList<Book>();
 		for(int i=0;i<=LibraryDB.BOOKS.size()-1;i++)
 		{
 			Book retrievedBook=LibraryDB.BOOKS.get(i);
 			String retrievedBookName=retrievedBook.getBookName();
-			if(bookName.equals(retrievedBookName))
+			if(bookName.equalsIgnoreCase(retrievedBookName))
 			{
 				searchList.add(retrievedBook);	
 				return searchList;
@@ -65,13 +64,13 @@ public class UserDAOImplement implements UserDAO{
 	}
 
 	@Override
-	public List<Book> searchBookByAuthor(String author) {
-		List<Book> searchList=new LinkedList<Book>();
+	public ArrayList<Book> searchBookByAuthor(String author) {
+		ArrayList<Book> searchList=new ArrayList<Book>();
 		for(int i=0;i<=LibraryDB.BOOKS.size()-1;i++)
 		{
 			Book retrievedBook=LibraryDB.BOOKS.get(i);
 			String retrievedBookAuthor=retrievedBook.getAuthor();
-			if(author.equals(retrievedBookAuthor))
+			if(author.equalsIgnoreCase(retrievedBookAuthor))
 			{
 				searchList.add(retrievedBook);	
 			}
@@ -87,13 +86,13 @@ public class UserDAOImplement implements UserDAO{
 	}
 
 	@Override
-	public List<Book> searchBookByCategory(String category) {
-		List<Book> searchList=new LinkedList<Book>();
+	public ArrayList<Book> searchBookByCategory(String category) {
+		ArrayList<Book> searchList=new ArrayList<Book>();
 		for(int i=0;i<=LibraryDB.BOOKS.size()-1;i++)
 		{
 			Book retrievedBook=LibraryDB.BOOKS.get(i);
 			String retrievedCategory=retrievedBook.getCategory();
-			if(category.equals(retrievedCategory))
+			if(category.equalsIgnoreCase(retrievedCategory))
 			{
 				searchList.add(retrievedBook);	
 			}
@@ -110,7 +109,7 @@ public class UserDAOImplement implements UserDAO{
 	}
 
 	@Override
-	public List<Book> getBooksInfo() {
+	public ArrayList<Book> getBooksInfo() {
 		return LibraryDB.BOOKS;
 	}
 

@@ -1,6 +1,6 @@
 package com.capgemini.librarymanagementsystem.dao;
 
-import java.util.List;
+import java.util.ArrayList;
 
 import com.capgemini.librarymanagementsystem.dto.Book;
 import com.capgemini.librarymanagementsystem.dto.RequestBean;
@@ -11,9 +11,9 @@ public interface UserDAO {
 	User loginUser(String email,String password);
 	public RequestBean bookRequest(User user, Book book);
 	public RequestBean bookReturn(User user, Book book);
-	List<Book> searchBookByTitle(String bookName);
-	List<Book> searchBookByAuthor(String author);
-	List<Book> searchBookByCategory(String category);
-	List<Book> getBooksInfo();
+	ArrayList<Book> searchBookByTitle(String bookName);
+	ArrayList<Book> searchBookByAuthor(String author);
+	ArrayList<Book> searchBookByCategory(String category);
+	ArrayList<Book> getBooksInfo();
 	
 }

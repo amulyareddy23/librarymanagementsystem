@@ -1,6 +1,6 @@
 package com.capgemini.librarymanagementsystem.database;
 
-import java.util.LinkedList;
+import java.util.ArrayList;
 
 import com.capgemini.librarymanagementsystem.dto.Admin;
 import com.capgemini.librarymanagementsystem.dto.Book;
@@ -8,21 +8,19 @@ import com.capgemini.librarymanagementsystem.dto.RequestBean;
 import com.capgemini.librarymanagementsystem.dto.User;
 
 public class LibraryDB {
-	public static final LinkedList<Book> BOOKS = new LinkedList<Book>(); 
-	public static final LinkedList<Admin> ADMIN = new LinkedList<Admin>();
-	public static final LinkedList<User> USER = new LinkedList<User>();
-	public static final LinkedList<RequestBean> REQUEST = new LinkedList<RequestBean>();
+	public static final ArrayList<Book> BOOKS = new ArrayList<Book>(); 
+	public static final ArrayList<Admin> ADMIN = new ArrayList<Admin>();
+	public static final ArrayList<User> USER = new ArrayList<User>();
+	public static final ArrayList<RequestBean> REQUEST = new ArrayList<RequestBean>();
 
 	public static void addToDB() {
 
-		ADMIN.add(new Admin(111111,"Amulya","Ammu@123","ammu@gmail.com",785963147));
+		ADMIN.add(new Admin(111111,"Amulya","Ammu@123","ammu@gmail.com",685963147));
 
-		//USER.add(new User(111111,"ramya","ramya@gmail.com","Ramya@123","cse",7788997788,07/08/2020,02/02/2020);
-		
 		BOOKS.add(new Book(101010,"java","james","gosling","coding"));
-		BOOKS.add(new Book(101011,"history","tom","henry feild","world"));
-		BOOKS.add(new Book(101012,"angular","misko","adam","js"));
-		BOOKS.add(new Book(101013,"computers","charles","aborns","programing"));
+		BOOKS.add(new Book(101011,"chemistry","tom","tom cruise","world"));
+		BOOKS.add(new Book(101012,"jdbc","misko","adam","Goels"));
+		BOOKS.add(new Book(101013,"Processors","Jain","babbage","programing"));
 
 	}
 

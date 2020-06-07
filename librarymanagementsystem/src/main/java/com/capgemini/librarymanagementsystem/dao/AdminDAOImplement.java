@@ -1,7 +1,6 @@
 package com.capgemini.librarymanagementsystem.dao;
 
-import java.util.LinkedList;
-import java.util.List;
+import java.util.ArrayList;
 
 import com.capgemini.librarymanagementsystem.database.LibraryDB;
 import com.capgemini.librarymanagementsystem.dto.Admin;
@@ -14,19 +13,20 @@ public class AdminDAOImplement implements AdminDAO{
 
 	@Override
 	public boolean registerAdmin(Admin admin) {
-		for(Admin ad : LibraryDB.ADMIN) {
-			if(ad.getEmail().equals(admin.getEmail())) {
-				return false;
+		boolean isRegistered = true;
+		for(Admin registeredEmail : LibraryDB.ADMIN) {
+			if(registeredEmail.getEmail().equalsIgnoreCase(admin.getEmail())) {
+				isRegistered = false;
 			}
 		}
 		LibraryDB.ADMIN.add(admin);
-		return true;
+		return isRegistered;
 	}
 
 	@Override
 	public Admin loginAdmin(String email, String password) {
 		for(Admin admin : LibraryDB.ADMIN) {
-			if(admin.getEmail().equals(email) ) {
+			if(admin.getEmail().equalsIgnoreCase(email) ) {
 				if(admin.getPassword().equals(password)) {
 					return admin;
 				}else {
@@ -43,13 +43,14 @@ public class AdminDAOImplement implements AdminDAO{
 
 	@Override
 	public boolean addBook(Book book) {
-		for(Book b : LibraryDB.BOOKS) {
-			if(b.getId()==book.getId()) {
-				return false;
+		boolean isAdded = true;
+		for(Book addBook : LibraryDB.BOOKS) {
+			if(addBook.getId()==book.getId()) {
+				isAdded = false;
 			}
 		}
 		LibraryDB.BOOKS.add(book);
-		return true;
+		return isAdded;
 	}
 
 	@Override
@@ -71,13 +72,13 @@ public class AdminDAOImplement implements AdminDAO{
 
 
 	@Override
-	public List<Book> searchBookByTitle(String bookName) {
-		List<Book> searchList=new LinkedList<Book>();
+	public ArrayList<Book> searchBookByTitle(String bookName) {
+		ArrayList<Book> searchList=new ArrayList<Book>();
 		for(int i=0;i<=LibraryDB.BOOKS.size()-1;i++)
 		{
 			Book retrievedBook=LibraryDB.BOOKS.get(i);
 			String retrievedBookName=retrievedBook.getBookName();
-			if(bookName.equals(retrievedBookName))
+			if(bookName.equalsIgnoreCase(retrievedBookName))
 			{
 				searchList.add(retrievedBook);	
 				//return searchList;
@@ -95,13 +96,13 @@ public class AdminDAOImplement implements AdminDAO{
 	}
 
 	@Override
-	public List<Book> searchBookByAuthor(String author) {
-		List<Book> searchList=new LinkedList<Book>();
+	public ArrayList<Book> searchBookByAuthor(String author) {
+		ArrayList<Book> searchList=new ArrayList<Book>();
 		for(int i=0;i<=LibraryDB.BOOKS.size()-1;i++)
 		{
 			Book retrievedBook=LibraryDB.BOOKS.get(i);
 			String retrievedBookAuthor=retrievedBook.getAuthor();
-			if(author.equals(retrievedBookAuthor))
+			if(author.equalsIgnoreCase(retrievedBookAuthor))
 			{
 				searchList.add(retrievedBook);	
 			}
@@ -118,18 +119,18 @@ public class AdminDAOImplement implements AdminDAO{
 	}
 
 	@Override
-	public List<Book> getBooksInfo() {
+	public ArrayList<Book> getBooksInfo() {
 		return LibraryDB.BOOKS;
 	}
 
 	@Override
-	public List<Book> searchBookByCategory(String category) {
-		List<Book> searchList=new LinkedList<Book>();
+	public ArrayList<Book> searchBookByCategory(String category) {
+		ArrayList<Book> searchList=new ArrayList<Book>();
 		for(int i=0;i<=LibraryDB.BOOKS.size()-1;i++)
 		{
 			Book retrievedBook=LibraryDB.BOOKS.get(i);
 			String retrievedCategory=retrievedBook.getCategory();
-			if(category.equals(retrievedCategory))
+			if(category.equalsIgnoreCase(retrievedCategory))
 			{
 				searchList.add(retrievedBook);	
 			}
@@ -145,8 +146,8 @@ public class AdminDAOImplement implements AdminDAO{
 	}
 
 	@Override
-	public List<User> showUsers() {
-		List<User> usersList = new LinkedList<User>();
+	public ArrayList<User> showUsers() {
+		ArrayList<User> usersList = new ArrayList<User>();
 		for (User userBean : LibraryDB.USER) {
 
 			userBean.getId();
@@ -160,8 +161,8 @@ public class AdminDAOImplement implements AdminDAO{
 	}
 
 	@Override
-	public List<RequestBean> showRequests() {
-		List<RequestBean> info = new LinkedList<RequestBean>();
+	public ArrayList<RequestBean> showRequests() {
+		ArrayList<RequestBean> info = new ArrayList<RequestBean>();
 		for (RequestBean requestInfo : LibraryDB.REQUEST) {
 			requestInfo.getBookInfo();
 			requestInfo.getUserInfo();
@@ -214,7 +215,6 @@ public class AdminDAOImplement implements AdminDAO{
 					noOfBooksBorrowed++;
 					System.out.println(noOfBooksBorrowed);
 					user.setBooksBorrowed(noOfBooksBorrowed);
-					// DataBase.REQUESTDB.remove(requestInfo);
 					requestInfo.setIssued(true);
 					return true;
 				} else {

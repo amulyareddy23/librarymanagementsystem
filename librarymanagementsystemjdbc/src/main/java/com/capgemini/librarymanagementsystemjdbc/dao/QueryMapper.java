@@ -17,7 +17,8 @@ public interface QueryMapper {
 	String requestBookQuery2="select count(*) as uid from borrowed_books where uid=? and bid=? and email=(select email from users where uid=?)";
 	String requestBookQuery3="select count(*) as uid from book_issue_details where uid=?";
 	String requestBookQuery4="insert into request_details values(?,(select concat(firstname,'_',lastname) from users where uid=?),?,(select bookname from bookbean where bid=?),(select email from users where uid=?))";
-
+	String requestBookQuery5="select * from request_details where uid=? and bid=?";
+	
 	String searchBookByTitle="select * from bookbean where bookname=?";
 	String searchBookByAuthor="select * from bookbean where author=?";
 	String getBooksInfoQuery="select * from bookbean";

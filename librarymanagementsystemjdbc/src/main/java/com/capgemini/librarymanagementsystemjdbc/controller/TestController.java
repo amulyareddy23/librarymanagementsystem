@@ -76,6 +76,7 @@ public class TestController {
 									flag = true;
 								} catch (InputMismatchException e) {
 									flag = false;
+									scanner.nextLine();
 									System.err.println("Name should contains only Alphabates");
 								} catch (LMSException e) {
 									flag = false;
@@ -90,6 +91,7 @@ public class TestController {
 									flag = true;
 								} catch (InputMismatchException e) {
 									flag = false;
+									scanner.nextLine();
 									System.err.println("Name should contains only Alphabates");
 								} catch (LMSException e) {
 									flag = false;
@@ -105,6 +107,7 @@ public class TestController {
 									flag = true;
 								} catch (InputMismatchException e) {
 									flag = false;
+									scanner.nextLine();
 									System.err.println("Email should be proper ");
 								} catch (LMSException e) {
 									flag = false;
@@ -120,6 +123,7 @@ public class TestController {
 									flag = true;
 								} catch (InputMismatchException e) {
 									flag = false;
+									scanner.nextLine();
 									System.err.println("Enter correct Password ");
 								} catch (LMSException e) {
 									flag = false;
@@ -135,6 +139,7 @@ public class TestController {
 									flag = true;
 								} catch (InputMismatchException e) {
 									flag = false;
+									scanner.nextLine();
 									System.err.println("Mobile Number  should contains only numbers");
 								} catch (LMSException e) {
 									flag = false;
@@ -180,7 +185,7 @@ public class TestController {
 								} else {
 									System.err.println("Email doesn't exist");
 								}
-								if(loginInfo.getRole().equals("admin")) {
+								if(loginInfo.getRole().equalsIgnoreCase("admin")) {
 									do {
 										try {
 											System.out.println("-----------------------------------------------");
@@ -211,15 +216,13 @@ public class TestController {
 														flag = true;
 													} catch (InputMismatchException e) {
 														flag = false;
+														scanner.nextLine();
 														System.err.println("Id should contains only digits");
 													} catch (LMSException e) {
 														flag = false;
 														System.err.println(e.getMessage());
 													}
 												} while (!flag);
-
-
-
 
 												do {
 													try {
@@ -229,14 +232,13 @@ public class TestController {
 														flag = true;
 													} catch (InputMismatchException e) {
 														flag = false;
+														scanner.nextLine();
 														System.err.println("Book-Name should contains only Alphabets");
 													} catch (LMSException e) {
 														flag = false;
 														System.err.println(e.getMessage());
 													}
 												} while (!flag);
-
-
 
 												do {
 													try {
@@ -246,6 +248,7 @@ public class TestController {
 														flag = true;
 													} catch (InputMismatchException e) {
 														flag = false;
+														scanner.nextLine();
 														System.err.println("Author Name should contains only Alphabates");
 													} catch (LMSException e) {
 														flag = false;
@@ -262,6 +265,7 @@ public class TestController {
 														flag = true;
 													} catch (InputMismatchException e) {
 														flag = false;
+														scanner.nextLine();
 														System.err.println("Book-Category should contains only Alphabates");
 													} catch (LMSException e) {
 														flag = false;
@@ -278,6 +282,7 @@ public class TestController {
 														flag = true;
 													} catch (InputMismatchException e) {
 														flag = false;
+														scanner.nextLine();
 														System.err.println("Book-PublisherName should contains only Alphabates");
 													} catch (LMSException e) {
 														flag = false;
@@ -291,7 +296,6 @@ public class TestController {
 												bi.setAuthor(bookAuthor);
 												bi.setCategory(bookCategory);
 												bi.setPublisher(bookPublisherName);
-												//bi.setCopies(addCopies);
 												try {
 													boolean check2=service2.addBook(bi);
 													if(check2) {
@@ -575,7 +579,7 @@ public class TestController {
 										}
 									}while(true);
 								}
-								else if(loginInfo.getRole().equals("student")) {
+								else if(loginInfo.getRole().equalsIgnoreCase("student")) {
 									do {
 										try {
 											System.out.println("-----------------------------------------------");

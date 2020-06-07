@@ -8,6 +8,7 @@ import java.util.List;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.EntityTransaction;
+import javax.persistence.Persistence;
 import javax.persistence.PersistenceUnit;
 import javax.persistence.Query;
 import javax.persistence.TypedQuery;
@@ -23,13 +24,13 @@ import com.capgemini.librarymanagementsystemspringrest.exception.LMSException;
 
 @Repository
 public class AdminDAOImplement implements AdminDAO{
-	
+
 	EntityManager manager = null;
 	EntityTransaction transaction = null;
 	int noOfBooks;
 
 	@PersistenceUnit
-	private EntityManagerFactory factory;
+	private EntityManagerFactory factory = Persistence.createEntityManagerFactory("TestPersistence");
 
 	@Override
 	public boolean addBook(BookBean book) {
@@ -37,7 +38,9 @@ public class AdminDAOImplement implements AdminDAO{
 			manager = factory.createEntityManager();
 			transaction = manager.getTransaction();
 			transaction.begin();
-			manager.persist(book);
+			if(!(book.getBookName().isEmpty() || book.getAuthor().isEmpty() || book.getCategory().isEmpty() || book.getPublisher().isEmpty())) {
+				manager.persist(book);
+			}
 			transaction.commit();
 			return true;
 		}catch (Exception e) {
@@ -64,18 +67,57 @@ public class AdminDAOImplement implements AdminDAO{
 
 	@Override
 	public boolean updateBook(BookBean book) {
-		try{
-			manager = factory.createEntityManager();
-			transaction = manager.getTransaction();
-			transaction.begin();
-			BookBean record = manager.find(BookBean.class, book.getBId());
-			record.setBookName(book.getBookName());
-			transaction.commit();
-			return true;
-		}catch (Exception e) {
-			System.err.println(e.getMessage());
-			return false;
+		boolean isUpdated = false;
+		manager = factory.createEntityManager();
+		BookBean existing = manager.find(BookBean.class, book.getBId());
+		if(existing != null) {
+			try{
+				transaction = manager.getTransaction();
+				transaction.begin();
+
+				String bookNewName = book.getBookName();
+				if(bookNewName != null) {
+					bookNewName = bookNewName.trim();
+				}
+
+				String bookNewAuthor = book.getAuthor();
+				if(bookNewAuthor != null) {
+					bookNewAuthor = bookNewAuthor.trim();
+				}
+
+				String bookNewCategory = book.getCategory();
+				if(bookNewCategory != null) {
+					bookNewCategory = bookNewCategory.trim();
+				}
+
+				String bookNewPublisher = book.getPublisher();
+				if(bookNewPublisher != null) {
+					bookNewPublisher = bookNewPublisher.trim();
+				}
+
+				if(bookNewName != null && !bookNewName.isEmpty() && bookNewName.length()>1) {
+					existing.setBookName(bookNewName);
+				}
+
+				if(bookNewAuthor != null && !bookNewAuthor.isEmpty() && bookNewAuthor.length()>1) {
+					existing.setAuthor(bookNewAuthor);
+				}
+
+				if(bookNewCategory != null && !bookNewCategory.isEmpty() && bookNewCategory.length()>1) {
+					existing.setCategory(bookNewCategory);
+				}
+
+				if(bookNewPublisher != null && !bookNewPublisher.isEmpty() && bookNewPublisher.length()>1) {
+					existing.setPublisher(bookNewPublisher);
+				}
+				transaction.commit();
+				isUpdated = true;
+			}catch (Exception e) {
+				System.err.println(e.getMessage());
+			}
+
 		}
+		return isUpdated;
 	}
 
 	@Override 
@@ -118,6 +160,16 @@ public class AdminDAOImplement implements AdminDAO{
 						borrowedBooks.setBookName(book.get(0).toString());
 						manager.persist(borrowedBooks);
 						transaction.commit();
+						
+						transaction.begin();
+						String jpql4 = "select r from RequestDetailsBean r where r.bId=:bId and r.uId=:uId";
+						Query query4 = manager.createQuery(jpql4);
+						query4.setParameter("bId", bId);
+						query4.setParameter("uId", uId);
+						RequestDetailsBean rdb = (RequestDetailsBean) query4.getSingleResult();
+						manager.remove(rdb);
+						transaction.commit();
+						
 						return true;
 					}else {
 						throw new LMSException("Book Not issued");
@@ -148,17 +200,15 @@ public class AdminDAOImplement implements AdminDAO{
 		}
 		LinkedList<Integer> list = new LinkedList<Integer>();
 		list.add(noOfBooks);
-		factory.close();
 		return list;
 	}
-	
+
 	@Override
 	public List<RequestDetailsBean> showRequests() {
 		manager = factory.createEntityManager();
 		String jpql = "select r from RequestDetailsBean r";
 		TypedQuery<RequestDetailsBean> query = manager.createQuery(jpql,RequestDetailsBean.class);
 		List<RequestDetailsBean> recordList = query.getResultList();
-		factory.close();
 		return recordList;
 	}
 
@@ -168,7 +218,6 @@ public class AdminDAOImplement implements AdminDAO{
 		String jpql = "select b from BookIssueBean b";
 		TypedQuery<BookIssueBean> query = manager.createQuery(jpql,BookIssueBean.class);
 		List<BookIssueBean> recordList = query.getResultList();
-		factory.close();
 		return recordList;
 	}
 
@@ -178,8 +227,29 @@ public class AdminDAOImplement implements AdminDAO{
 		String jpql = "select u from UsersBean u";
 		TypedQuery<UsersBean> query = manager.createQuery(jpql,UsersBean.class);
 		List<UsersBean> recordList = query.getResultList();
-		factory.close();
 		return recordList;
+	}
+	
+	@Override
+	public boolean cancelRequest(int uId, int bId) {	
+		try {
+			manager = factory.createEntityManager();
+			transaction = manager.getTransaction();
+			transaction.begin();
+			String jpql = "select r from RequestDetailsBean r where r.bId=:bId and r.uId=:uId";
+			Query query4 = manager.createQuery(jpql);
+			query4.setParameter("bId", bId);
+			query4.setParameter("uId", uId);
+			RequestDetailsBean rdb = (RequestDetailsBean) query4.getSingleResult();
+			manager.remove(rdb);
+			transaction.commit();
+					
+			return true;
+			
+		}catch (Exception e) {
+			System.out.println(e.getMessage());
+			return false;
+		}
 	}
 
 

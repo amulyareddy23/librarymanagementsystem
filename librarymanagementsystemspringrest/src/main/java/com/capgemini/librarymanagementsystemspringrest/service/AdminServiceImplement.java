@@ -65,4 +65,10 @@ public class AdminServiceImplement implements AdminService{
 		return dao.showUsers();
 	}
 
+	@Override
+	public boolean cancelRequest(int uId, int bId) {
+		// TODO Auto-generated method stub
+		return dao.cancelRequest(uId, bId);
+	}
+
 }

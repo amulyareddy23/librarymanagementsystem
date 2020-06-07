@@ -42,13 +42,13 @@ public class StudentDAOTest {
 	
 	@Test
 	public void testReturnBookValid() {
-		boolean check = dao.returnBook(105, 100002, "yes");
+		boolean check = dao.returnBook(105, 100002);
 		Assertions.assertTrue(check);
 	}
 	
 	@Test
 	public void testReturnBookInvalid() {
-		boolean check = dao.returnBook(105, 100002, "yes");
+		boolean check = dao.returnBook(105, 100002);
 		Assertions.assertFalse(check);
 	}
 

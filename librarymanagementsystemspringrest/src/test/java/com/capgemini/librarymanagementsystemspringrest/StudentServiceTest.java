@@ -41,13 +41,13 @@ private StudentService service ;
 	
 	@Test
 	public void testReturnBookValid() {
-		boolean check = service.returnBook(105, 100002, "yes");
+		boolean check = service.returnBook(105, 100002);
 		Assertions.assertTrue(check);
 	}
 	
 	@Test
 	public void testReturnBookInvalid() {
-		boolean check = service.returnBook(105, 100002, "yes");
+		boolean check = service.returnBook(105, 100002);
 		Assertions.assertFalse(check);
 	}
 

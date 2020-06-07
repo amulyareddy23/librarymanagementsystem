@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -23,6 +24,7 @@ import com.capgemini.librarymanagementsystemspringrest.service.StudentService;
 import com.capgemini.librarymanagementsystemspringrest.service.UsersService;
 
 @RestController
+@CrossOrigin("http://localhost:4200")
 public class LmsRestController {
 
 	@Autowired
@@ -54,11 +56,12 @@ public class LmsRestController {
 	@PostMapping(path = "/login", 
 			consumes= {MediaType.APPLICATION_JSON_VALUE,MediaType.APPLICATION_XML_VALUE},
 			produces= {MediaType.APPLICATION_JSON_VALUE,MediaType.APPLICATION_XML_VALUE})
-	public LmsResponse authentication(String email, String password) {
-		UsersBean userLogin = service.login(email, password);
+	public LmsResponse authentication(@RequestBody UsersBean users) {
+		UsersBean userLogin = service.login(users.getEmail(), users.getPassword());
 		LmsResponse response = new LmsResponse();
 		if (userLogin != null) {
-			response.setMessage("Login succesfull");
+			response.setMessage("Logged in successfully");
+			response.setUserInfo(userLogin);
 		} else {
 			response.setError(true);
 			response.setMessage("Invalid credentials,Please try again");
@@ -113,7 +116,7 @@ public class LmsRestController {
 	
 	@GetMapping(path="/getBooksById",
 			produces = {MediaType.APPLICATION_JSON_VALUE,MediaType.APPLICATION_XML_VALUE})
-	public LmsResponse getBooksById(int bId) {
+	public LmsResponse getBooksById( int bId) {
 		List<BookBean> recordList = service.searchBookById(bId);
 		LmsResponse response = new LmsResponse();
 		
@@ -127,9 +130,9 @@ public class LmsRestController {
 				
 	}
 	
-	@GetMapping(path="/getBooksByTitle",
+	@GetMapping(path="/getBooksByTitle/{bookName}",
 			produces = {MediaType.APPLICATION_JSON_VALUE,MediaType.APPLICATION_XML_VALUE})
-	public LmsResponse getBooksByTitle(String bookName) {
+	public LmsResponse getBooksByTitle(@PathVariable(name="bookName") String bookName) {
 		List<BookBean> recordList = service.searchBookByTitle(bookName);
 		LmsResponse response = new LmsResponse();
 		
@@ -143,9 +146,9 @@ public class LmsRestController {
 				
 	}
 	
-	@GetMapping(path="/getBooksByAuthor",
+	@GetMapping(path="/getBooksByAuthor/{author}",
 			produces = {MediaType.APPLICATION_JSON_VALUE,MediaType.APPLICATION_XML_VALUE})
-	public LmsResponse getBooksByAuthor(String author) {
+	public LmsResponse getBooksByAuthor(@PathVariable(name="author") String author) {
 		List<BookBean> recordList = service.searchBookByAuthor(author);
 		LmsResponse response = new LmsResponse();
 		
@@ -174,10 +177,10 @@ public class LmsRestController {
 		return response;
 	}
 	
-	@GetMapping(path="/getBorrowedBooks",
+	@PostMapping(path="/getBorrowedBooks",
 			produces = {MediaType.APPLICATION_JSON_VALUE,MediaType.APPLICATION_XML_VALUE})
-	public LmsResponse getBorrowedBooks(int uId) {
-		List<BorrowedBooksBean> recordList = service2.borrowedBook(uId);
+	public LmsResponse getBorrowedBooks(@RequestBody BorrowedBooksBean bean) {
+		List<BorrowedBooksBean> recordList = service2.borrowedBook(bean.getUId());
 		LmsResponse response = new LmsResponse();
 		
 		if(recordList != null && !recordList.isEmpty()) {
@@ -234,11 +237,11 @@ public class LmsRestController {
 		return response;
 	}
 	
-	@PutMapping(path = "/updatePassword",
+	@PostMapping(path = "/updatePassword",
 			produces= {MediaType.APPLICATION_JSON_VALUE,MediaType.APPLICATION_XML_VALUE},
 			consumes= {MediaType.APPLICATION_JSON_VALUE,MediaType.APPLICATION_XML_VALUE})
-	public LmsResponse updatePassord(int id, String password, String newPassword, String role) {
-		boolean isUpdated = service.updatePassword(id, password, newPassword, role);
+	public LmsResponse updatePassord(@RequestBody UsersBean bean) {
+		boolean isUpdated = service.updatePassword(bean.getUId(),bean.getPassword());
 		LmsResponse response = new LmsResponse();
 		
 		if(isUpdated) {
@@ -253,8 +256,8 @@ public class LmsRestController {
 	@PostMapping(path = "/requestBook", 
 			consumes= {MediaType.APPLICATION_JSON_VALUE,MediaType.APPLICATION_XML_VALUE},
 			produces= {MediaType.APPLICATION_JSON_VALUE,MediaType.APPLICATION_XML_VALUE})
-	public LmsResponse requestBook(int uId,int bId) {
-		boolean isRequested = service2.request(uId, bId);
+	public LmsResponse requestBook(@RequestBody RequestDetailsBean bean) {
+		boolean isRequested = service2.request(bean.getUId(), bean.getBId());
 
 		LmsResponse response = new LmsResponse();
 		if(isRequested) {
@@ -269,8 +272,8 @@ public class LmsRestController {
 	@PostMapping(path = "/issueBook", 
 			consumes= {MediaType.APPLICATION_JSON_VALUE,MediaType.APPLICATION_XML_VALUE},
 			produces= {MediaType.APPLICATION_JSON_VALUE,MediaType.APPLICATION_XML_VALUE})
-	public LmsResponse issueBook(int uId,int bId) {
-		boolean isIssued = service1.issueBook(bId, uId);
+	public LmsResponse issueBook(@RequestBody BookIssueBean bean) {
+		boolean isIssued = service1.issueBook(bean.getBId(),bean.getUId());
 
 		LmsResponse response = new LmsResponse();
 		if(isIssued) {
@@ -286,16 +289,30 @@ public class LmsRestController {
 	@PostMapping(path="/returnBook",
 			consumes= {MediaType.APPLICATION_JSON_VALUE,MediaType.APPLICATION_XML_VALUE},
 			produces= {MediaType.APPLICATION_JSON_VALUE,MediaType.APPLICATION_XML_VALUE})
-	public LmsResponse returnBook(int uId,int bId,String status ) {
-		boolean isReturned = service2.returnBook(bId, uId, status);
+	public LmsResponse returnBook(@RequestBody BookIssueBean bean) {
+		boolean isReturned = service2.returnBook(bean.getBId(), bean.getUId());
 		LmsResponse response = new LmsResponse();
 		if(isReturned) {
 			response.setMessage("Book Returned");
 		} else {
 			response.setError(true);
-			response.setMessage("Book not returned");
 		}
 		return response;		
+	}
+	
+	@PostMapping(path="/cancelRequest",
+			consumes= {MediaType.APPLICATION_JSON_VALUE,MediaType.APPLICATION_XML_VALUE},
+			produces= {MediaType.APPLICATION_JSON_VALUE,MediaType.APPLICATION_XML_VALUE})
+	public  LmsResponse cancelRequest(@RequestBody RequestDetailsBean bean) {
+		boolean isCancelled = service1.cancelRequest(bean.getUId(), bean.getBId());
+		LmsResponse response = new LmsResponse();
+		if(isCancelled) {
+			response.setMessage("Request is cancelled");
+		}else {
+			response.setError(true);
+			response.setMessage("Request not Cancelled");
+		}
+		return response;
 	}
 		
 }

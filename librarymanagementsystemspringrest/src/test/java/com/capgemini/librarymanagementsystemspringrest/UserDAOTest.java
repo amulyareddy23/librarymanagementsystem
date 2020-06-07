@@ -109,13 +109,13 @@ public class UserDAOTest {
 	
 	@Test
 	public void testUpdatePasswordValid() {
-		boolean check = dao.updatePassword(100102, "ammU@123", "Admin@123", "admin");
+		boolean check = dao.updatePassword(100102, "Admin@123");
 		Assertions.assertTrue(check);
 	}
 	
 	@Test
 	public void testUpdatePasswordInvalid() {
-		boolean check = dao.updatePassword(100102, "ammU@123", "Admin@123", "student");
+		boolean check = dao.updatePassword(100102, "Admin@123");
 		Assertions.assertFalse(check);
 	}
 	

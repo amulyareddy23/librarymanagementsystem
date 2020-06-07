@@ -16,5 +16,6 @@ public interface AdminService {
 	List<RequestDetailsBean> showRequests();
 	List<BookIssueBean> showIssuedBooks();
 	List<UsersBean> showUsers();
+	boolean cancelRequest(int uId,int bId);
 
 }

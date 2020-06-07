@@ -15,6 +15,6 @@ public interface UsersService {
 	List<BookBean> searchBookByTitle(String bookName);
 	List<BookBean> searchBookByAuthor(String author);
 	List<BookBean> getBooksInfo();
-	boolean updatePassword(int id,String password,String newPassword,String role);
+	boolean updatePassword(int id,String password);
 
 }

@@ -23,8 +23,13 @@ public class UsersServiceImplement implements UsersService{
 
 	@Override
 	public UsersBean login(String email, String password) {
-		// TODO Auto-generated method stub
+		
+		/*
+		 * if(password == null || password.trim().isEmpty() || password.isEmpty()) {
+		 * return null; }
+		 */
 		return dao.login(email, password);
+		
 	}
 
 	@Override
@@ -52,9 +57,9 @@ public class UsersServiceImplement implements UsersService{
 	}
 
 	@Override
-	public boolean updatePassword(int id, String password, String newPassword, String role) {
+	public boolean updatePassword(int id, String password) {
 		// TODO Auto-generated method stub
-		return dao.updatePassword(id, password, newPassword, role);
+		return dao.updatePassword(id, password);
 	}
 
 	

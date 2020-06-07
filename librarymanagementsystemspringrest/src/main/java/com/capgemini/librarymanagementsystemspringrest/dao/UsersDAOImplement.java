@@ -5,6 +5,7 @@ import java.util.List;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.EntityTransaction;
+import javax.persistence.Persistence;
 import javax.persistence.PersistenceUnit;
 import javax.persistence.TypedQuery;
 
@@ -22,7 +23,7 @@ public class UsersDAOImplement implements UsersDAO{
 	int noOfBooks;
 
 	@PersistenceUnit
-	private EntityManagerFactory factory;
+	private EntityManagerFactory factory = Persistence.createEntityManagerFactory("TestPersistence");
 
 	@Override
 	public boolean register(UsersBean user) {
@@ -30,6 +31,14 @@ public class UsersDAOImplement implements UsersDAO{
 			manager = factory.createEntityManager();
 			transaction = manager.getTransaction();
 			transaction.begin();
+			String jpql = "select u from UsersBean u";
+			TypedQuery<UsersBean> query = manager.createQuery(jpql,UsersBean.class);
+			List<UsersBean> list = query.getResultList();
+			for(UsersBean isExists : list) {
+				if(isExists.getEmail().equalsIgnoreCase(user.getEmail())) {
+					throw new LMSException("User already Exists");
+				}
+			}
 			manager.persist(user);
 			transaction.commit();
 			return true;
@@ -39,20 +48,31 @@ public class UsersDAOImplement implements UsersDAO{
 		}
 	}
 
+
 	@Override 
 	public UsersBean login(String email, String password) {
 		try {
-			manager = factory.createEntityManager();
-			String jpql="select u from UsersBean u where u.email=:email and u.password=:password";
-			TypedQuery<UsersBean> query = manager.createQuery(jpql,UsersBean.class);
-			query.setParameter("email", email);
-			query.setParameter("password", password);
-			UsersBean bean = query.getSingleResult();
-			return bean;
+			UsersBean bean = getUser(email);
+			if(bean.getEmail()!= null && bean.getEmail().equals(email) && bean.getPassword().equals(password)) {
+				return bean;
+			}else {
+
+				return null;
+			}
+
 		}catch(Exception e){
 			System.err.println(e.getMessage());
 			return null;
 		}
+	}
+
+	public UsersBean getUser(String email) {
+		manager=factory.createEntityManager();
+		String jpql="select u from UsersBean u where u.email=:email";
+		TypedQuery<UsersBean> query = manager.createQuery(jpql,UsersBean.class);
+		query.setParameter("email", email);
+		UsersBean bean = query.getSingleResult();
+		return bean;
 	}
 
 
@@ -107,26 +127,19 @@ public class UsersDAOImplement implements UsersDAO{
 		String jpql = "select b from BookBean b";
 		TypedQuery<BookBean> query = manager.createQuery(jpql,BookBean.class);
 		List<BookBean> recordList = query.getResultList();
-		factory.close();
 		return recordList;
 	}
 
 
 	@Override
-	public boolean updatePassword(int id, String password, String newPassword, String role) {
+	public boolean updatePassword(int id, String password) {
 		try{
 			manager = factory.createEntityManager();
 			transaction = manager.getTransaction();
 			transaction.begin();
-			String jpql = "select u from UsersBean u where u.uId=:uId and u.role=:role and u.password=:password";
-			TypedQuery<UsersBean> query = manager.createQuery(jpql,UsersBean.class);
-			query.setParameter("uId", id);
-			query.setParameter("role", role);
-			query.setParameter("password", password);
-			UsersBean rs = query.getSingleResult();
-			if(rs != null) {
-				UsersBean record = manager.find(UsersBean.class,id);
-				record.setPassword(newPassword);
+			UsersBean record = manager.find(UsersBean.class,id);
+			if(record != null) {
+				record.setPassword(password);
 				transaction.commit();
 				return true;			
 			}else {
@@ -138,6 +151,4 @@ public class UsersDAOImplement implements UsersDAO{
 			return false;
 		} 
 	}
-
-
 }

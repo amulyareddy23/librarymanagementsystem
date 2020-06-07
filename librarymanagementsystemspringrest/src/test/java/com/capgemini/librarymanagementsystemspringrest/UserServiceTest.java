@@ -109,13 +109,13 @@ private UsersService service ;
 	
 	@Test
 	public void testUpdatePasswordValid() {
-		boolean check = service.updatePassword(100102, "ammU@123", "Admin@123", "admin");
+		boolean check = service.updatePassword(100102,"Admin@123");
 		Assertions.assertTrue(check);
 	}
 	
 	@Test
 	public void testUpdatePasswordInvalid() {
-		boolean check = service.updatePassword(100102, "ammU@123", "Admin@123", "student");
+		boolean check = service.updatePassword(100102,"Admin@123");
 		Assertions.assertFalse(check);
 	}
 	

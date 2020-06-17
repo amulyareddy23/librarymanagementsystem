@@ -1,0 +1,30 @@
+<div class="alert alert-success" *ngIf='message'>{{ message }}</div>
+<div class="alert alert-danger" *ngIf='error'>{{ error }}</div>
+<div class="container mt-4">
+    <table class="table table-hover table-bordered">
+        <thead class="thead-dark">
+            <tr align="center">
+                <th>Request ID</th>
+                <th>User ID</th>
+                <th>Book ID</th>
+                <th>Email</th>
+                <th>Book Name</th>
+                <th>Issue</th>
+                <th>Reject</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr align="center" *ngFor='let request of requests' align="center">
+                <td>{{request.id}}</td>
+                <td>{{request.uid}}</td>
+                <td>{{request.bid}}</td>
+                <td>{{request.email}}</td>
+                <td>{{request.bookName}}</td>
+                <td><button class="btn btn-primary" style="width: 100%;" (click)='bookIssue(request)'>Approve</button></td>
+                <td><button class="btn btn-danger" style="width: 100%;" (click)='rejectRequest(request)'>Reject</button></td>
+            </tr>
+
+        </tbody>
+    </table>
+
+</div>

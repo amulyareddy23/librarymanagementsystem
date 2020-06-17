@@ -1,0 +1,89 @@
+<body>
+    <div class="alert alert-success" *ngIf='message'>{{ message }}</div>
+    <div class="alert alert-danger" *ngIf='error'>{{ error }}</div>
+    <div class="col-md-4 col-md-offset-4" id="login">
+        <section id="inner-wrapper" class="login">
+            <article>
+                <form #addBookForm='ngForm' (ngSubmit)='postBook(addBookForm)'>
+                    <div class="form-group">
+                        <div class="input-group">
+                            <input type="text" name="bookName" id="bookName" #bookName='ngModel' ngModel
+                                class="form-control" placeholder="Enter Book Name" required bookName minlength="3"
+                                pattern="[a-zA-Z ]*">
+                            <div *ngIf='bookName.touched && bookName.invalid'>
+                                <div *ngIf='bookName.errors.required' class="alert alert-danger">This field is mandatory
+                                </div>
+                                <div *ngIf='bookName.errors.minlength' class="alert alert-danger">This field accepts
+                                    minimum
+                                    3
+                                    characters
+                                </div>
+                                <div *ngIf='bookName.errors.pattern' class="alert alert-danger">This field accepts only
+                                    name
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="input-group">
+                            <input type="text" name="author" id="author" #author='ngModel' ngModel class="form-control"
+                                required author minlength="4" placeholder="Enter author name" pattern="[a-zA-Z ]*">
+                            <div *ngIf='author.touched && author.invalid'>
+                                <div *ngIf='author.errors.required' class="alert alert-danger">This field is mandatory
+                                </div>
+                                <div *ngIf='author.errors.minlength' class="alert alert-danger">This field accepts
+                                    minimum 4
+                                    characters
+                                </div>
+                                <div *ngIf='author.errors.pattern' class="alert alert-danger">This field accepts only
+                                    name
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="input-group">
+                            <select name="category" id="category" #category='ngModel' ngModel class="form-control"
+                                required>
+                                <option value="" disabled>Select Category</option>
+                                <option value="Fiction">Fiction</option>
+                                <option value="Programing">Programing</option>
+                                <option value="Journals">Journals</option>
+                                <option value="Electronics">Electronics</option>
+                                <option value="Computers">Computers</option>
+                                <option value="Novels">Novels</option>
+                                <option value="Electrical">Electrical</option>
+                                <option value="Chemistry">Chemistry</option>
+                                <option value="Physics">Physics</option>
+                                <option value="Mathematics">Mathematics</option>
+                            </select>
+                            <div *ngIf='category.touched && category.invalid'>
+                                <div *ngIf='category.errors.required' class="alert alert-danger">This field is mandatory
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="input-group">
+                            <input type="text" name="publisher" id="publisher" #publisher='ngModel' ngModel
+                                class="form-control" required publisher minlength="5" placeholder="Enter publisher name"
+                                pattern="[a-zA-Z ]*">
+                            <div *ngIf='publisher.touched && publisher.invalid'>
+                                <div *ngIf='publisher.errors.required' class="alert alert-danger">This field is
+                                    mandatory
+                                </div>
+                                <div *ngIf='publisher.errors.minlength' class="alert alert-danger">This field accepts
+                                    minimum 5
+                                    characters
+                                </div>
+                                <div *ngIf='publisher.errors.pattern' class="alert alert-danger">This field accepts only
+                                    name</div>
+                            </div>
+                        </div>
+                    </div>
+                    <button type="submit" class="btn btn-dark btn-block">Add Book</button>
+                </form>
+            </article>
+        </section>
+    </div>
+</body>

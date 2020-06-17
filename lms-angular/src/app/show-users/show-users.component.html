@@ -1,0 +1,27 @@
+<div class="container mt-4">
+    <table class="table table-hover table-bordered">
+        <thead class="thead-dark">
+            <tr align="center">
+                <th>User ID</th>
+                <th>First Name</th>
+                <th>Last Name</th>
+                <th>Email</th>
+                <th>Password</th>
+                <th>Mobile</th>
+                <th>Role</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr *ngFor='let users of usersInfo' align="center">
+                <td>{{users.uid}}</td>
+                <td>{{users.firstName}}</td>
+                <td>{{users.lastName}}</td>
+                <td>{{users.email}}</td>
+                <td>{{users.password}}</td>
+                <td>{{users.mobile}}</td>
+                <td>{{users.role}}</td>
+            </tr>
+        </tbody>
+    </table>
+
+</div>

@@ -1,0 +1,53 @@
+<div class="alert alert-danger" *ngIf='error'>{{error}}</div>
+<div class="alert alert-success" *ngIf='message'>{{message}}</div>
+<div class="main">
+    <div class="container">
+        <div class="middle">
+            <div id="login">
+                <h4 class="text-center font-weight-bold" style="font-family: 'Times New Roman', Times, serif;">LOGIN
+                </h4>
+                <br>
+                <form #loginForm='ngForm' (ngSubmit)='loginUser(loginForm)'>
+                    <fieldset class="clearfix">
+                        <p><span class="fa fa-envelope"></span><input type="text" name="email" id="email"
+                                #email='ngModel' ngModel minlength="10"
+                                pattern="^[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}$" Placeholder="Email" required></p>
+                        <div *ngIf='email.touched && email.invalid'>
+                            <div *ngIf='email.errors.required' class="alert alert-danger">This field is mandatory</div>
+                            <div *ngIf='email.errors.minlength' class="alert alert-danger">This field accepts minimum 10
+                                characters</div>
+                            <div *ngIf='email.errors.pattern' class="alert alert-danger">This field accepts only email
+                            </div>
+                        </div>
+                        <p><span class="fa fa-lock"></span><input type="password" name="password" id="password"
+                                #password='ngModel' ngModel minlength="8" Placeholder="Password" required>
+                        <div *ngIf='password.touched && password.invalid'>
+                            <div *ngIf='password.errors.required' class="alert alert-danger">This field is mandatory
+                            </div>
+                            <div *ngIf='password.errors.minlength' class="alert alert-danger">This field accepts minimum
+                                8 characters
+                            </div>
+                            <div *ngIf='password.errors.password' class="alert alert-danger">This field accepts only
+                                password
+                            </div>
+                        </div>
+                        <div>
+                            <span style="width:48%; text-align:left;  display: inline-block;"><a class="small-text"
+                                    routerLink="/updatePassword">Forgot
+                                    password?</a></span>
+                            <span style="width:50%; text-align:right;  display: inline-block;">
+                                <input type="submit" value="Login">
+                            </span>
+                        </div>
+                    </fieldset>
+                    <div class="clearfix"></div>
+                </form>
+                <div class="clearfix"></div>
+            </div> <!-- end login -->
+            <div>
+                <img src="https://t4.ftcdn.net/jpg/01/19/32/93/240_F_119329387_sUTbUdeyhk0nuhNw5WaFvOyQFmxeppjX.jpg">
+                <div class="clearfix"></div>
+            </div>
+        </div>
+    </div>
+</div>
